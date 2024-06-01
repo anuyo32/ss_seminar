@@ -15,15 +15,34 @@ $ git clone https://github.com/anuyo32/ss_seminar
 $ cd ss_seminar
 ```
 
-4. ファイルを指定してビルド
-- 実行ファイル名の指定なし、存在しないソースファイル名を使った指定はエラー
-- toy_share.cppをビルドしたいときは以下
+4. ビルド
 ```bash
-$ make toy_share
+$ make
 ```
 
 5. 実行
-- 実行ファイルがtoy_shareのときは以下
 ```bash
-$ ./bin/toy_share
+$ ./bin/main
+```
+
+## makeの使い方
+
+- コンパイルで生成されたオブジェクトファイル(.o)と依存関係ファイル(.d)を削除
+```bash
+$ make clean
+```
+
+- 上記ファイルに加え、実行ファイルも削除
+```bash
+$ make fclean
+```
+
+- ビルドのやり直し
+```bash
+$ make re
+```
+
+- dry-run(動作確認)：オプションで-nをつければOK
+```bash
+$ make -n clean
 ```
