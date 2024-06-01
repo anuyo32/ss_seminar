@@ -1,10 +1,6 @@
-// cited from: https://www.geeksforgeeks.org/additive-secret-sharing-and-share-proactivization-using-python/
-
-#include <iostream>
-#include <vector>
-#include <numeric>
-#include <cstdlib>
+#include "gen_and_rec_shares.h"
 #include <random>
+#include <numeric>
 
 int generateRandomNumber(int fieldSize)
 {
@@ -25,7 +21,7 @@ std::vector<int> getAdditiveShares(int secret, int N, int fieldSize)
         shares.push_back(generateRandomNumber(fieldSize));
     }
 
-    // 最後のシェアを追加 (秘密値から全てのシェアの合計を引いたもの)
+    // 最後のシェアを生成(秘密値から全てのシェアの合計を引いたもの)
     int sumShares = std::accumulate(shares.begin(), shares.end(), 0);
     int last_one_share = (secret - sumShares) % fieldSize;
     if (last_one_share < 0)
@@ -45,28 +41,4 @@ int reconstructSecret(std::vector<int> shares, int fieldSize)
 {
     int sumShares = std::accumulate(shares.begin(), shares.end(), 0);
     return sumShares % fieldSize;
-}
-
-int main()
-{
-    // シェアの生成
-    int secret = 1234;
-    int N = 5;
-    int fieldSize = 100000;
-    std::vector<int> shares = getAdditiveShares(secret, N, fieldSize);
-
-    // シェアの表示
-    std::cout << "Shares are: ";
-    for (int i = 0; i < N; i++)
-    {
-        std::cout << shares[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    // シェアから秘密値を復元
-    int reconstructedSecret = reconstructSecret(shares, fieldSize);
-    std::cout << "Reconstructed secret: " << reconstructedSecret << std::endl;
-
-    return 0;
 }
