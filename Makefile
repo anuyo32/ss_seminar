@@ -18,6 +18,7 @@ all: $(NAME)
 -include $(DEPENDS)
 
 $(NAME): $(OBJS)
+	mkdir -p ./bin
 	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS)
 
 # コンパイルで生成されたオブジェクトファイル(.o)と依存関係ファイル(.d)を削除
