@@ -1,5 +1,5 @@
-#ifndef PRINT_COMMUNICATION_CONTENT_H
-#define PRINT_COMMUNICATION_CONTENT_H
+#ifndef PRINT_COMMUNICATION_CONTENT_HPP
+#define PRINT_COMMUNICATION_CONTENT_HPP
 
 #include <vector>
 #include <utility>
@@ -13,4 +13,4 @@ void printVector(std::vector<u_int32_t> vec);
 
 std::pair<std::vector<u_int32_t>, std::vector<u_int32_t>> printDistributionWhoSentToWho(std::string party1_name, std::string party2_name, std::vector<u_int32_t> party1_before_shares, std::vector<u_int32_t> party2_before_shares);
 
-#endif // PRINT_COMMUNICATION_CONTENT_H
+#endif // PRINT_COMMUNICATION_CONTENT_HPP

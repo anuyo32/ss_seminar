@@ -1,4 +1,4 @@
-#include "gen_and_rec_shares.h"
+#include "gen_and_rec_shares.hpp"
 #include <random>
 #include <numeric>
 #include <iostream>

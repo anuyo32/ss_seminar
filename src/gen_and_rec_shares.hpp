@@ -1,5 +1,5 @@
-#ifndef GEN_AND_REC_SHARES_H
-#define GEN_AND_REC_SHARES_H
+#ifndef GEN_AND_REC_SHARES_HPP
+#define GEN_AND_REC_SHARES_HPP
 
 #include <vector>
 
@@ -11,4 +11,4 @@ void printShares(std::vector<u_int32_t> shares, std::string shares_name, int N, 
 
 u_int32_t reconstructSecret(std::vector<u_int32_t> shares, u_int32_t fieldSize);
 
-#endif // GEN_AND_REC_SHARES_H
+#endif // GEN_AND_REC_SHARES_HPP

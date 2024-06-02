@@ -1,4 +1,4 @@
-#include "print_communication_content.h"
+#include "print_communication_content.hpp"
 #include <iostream>
 #include <unistd.h>
 
@@ -27,7 +27,6 @@ void printSendMessage(std::string process_choice1, std::string choice1_message)
     }
     sleep(1);
     std::cout << std::endl;
-    sleep(1);
 }
 
 std::pair<std::vector<u_int32_t>, std::vector<u_int32_t>> renewSharesAfterCommunication(std::vector<u_int32_t> shares1, std::vector<u_int32_t> shares2)

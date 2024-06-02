@@ -1,5 +1,5 @@
-#include "beaver_triple.h"
-#include "gen_and_rec_shares.h"
+#include "beaver_triple.hpp"
+#include "gen_and_rec_shares.hpp"
 #include <numeric>
 #include <iostream>
 #include <tuple>
