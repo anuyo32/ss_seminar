@@ -8,7 +8,7 @@
 int main_1()
 {
     // 剰余環 (=mod)
-    u_int32_t fieldSize = UINT32_MAX; // =4294967295
+    u_int32_t fieldSize = 100000;
 
     // 秘密値
     u_int32_t secret;
