@@ -1,16 +1,45 @@
 #include "print_communication_content.h"
 #include <iostream>
+#include <unistd.h>
 
-std::pair<std::vector<int>, std::vector<int>> renewSharesAfterCommunication(std::vector<int> shares1, std::vector<int> shares2)
+void printSendMessage(std::string process_choice1, std::string choice1_message)
 {
-    int temp = shares1[1];
+    std::string input_choice;
+    while (true)
+    {
+        std::cout << "Enter '" << process_choice1 << "' to continue or 'stop' to exit: ";
+        std::cin >> input_choice;
+
+        if (input_choice == process_choice1)
+        {
+            std::cout << choice1_message << std::endl;
+            break;
+        }
+        else if (input_choice == "stop")
+        {
+            std::cout << "Stopping execution..." << std::endl;
+            std::exit(0); // プログラムを終了
+        }
+        else
+        {
+            std::cout << "Invalid input. Please enter '" << process_choice1 << "' or 'stop'." << std::endl;
+        }
+    }
+    sleep(1);
+    std::cout << std::endl;
+    sleep(1);
+}
+
+std::pair<std::vector<u_int32_t>, std::vector<u_int32_t>> renewSharesAfterCommunication(std::vector<u_int32_t> shares1, std::vector<u_int32_t> shares2)
+{
+    u_int32_t temp = shares1[1];
     shares1[1] = shares2[0];
     shares2[0] = temp;
 
     return std::make_pair(shares1, shares2);
 }
 
-void printVector(std::vector<int> vec)
+void printVector(std::vector<u_int32_t> vec)
 {
     std::cout << "[";
     for (std::size_t i = 0; i < vec.size(); i++)
@@ -24,7 +53,7 @@ void printVector(std::vector<int> vec)
     std::cout << "]";
 }
 
-std::pair<std::vector<int>, std::vector<int>> printDistributionWhoSentToWho(std::string party1_name, std::string party2_name, std::vector<int> party1_before_shares, std::vector<int> party2_before_shares)
+std::pair<std::vector<u_int32_t>, std::vector<u_int32_t>> printDistributionWhoSentToWho(std::string party1_name, std::string party2_name, std::vector<u_int32_t> party1_before_shares, std::vector<u_int32_t> party2_before_shares)
 {
     auto result = renewSharesAfterCommunication(party1_before_shares, party2_before_shares);
     std::cout << "Sent " << party1_before_shares[0] << " to " << party1_name << ". Sent " << party1_before_shares[1] << " to " << party2_name << "." << std::endl;

@@ -5,18 +5,17 @@
 #include "print_communication_content.h"
 #include <iostream>
 #include <string>
-#include <unistd.h>
 
 int main()
 {
-    // ***************n-partyでのシェアの生成と復元***************
+    // *************** n-partyでのシェアの生成と復元 ***************
     // // シェアの生成
-    // int secret = 1234;
+    // u_int32_t secret = 1234;
     // std::cout << "secret:" << secret << std::endl;
 
-    // int N = 5;
-    // int fieldSize = 100000;
-    // std::vector<int> shares = getAdditiveShares(secret, N, fieldSize);
+    // int N = 5;                    // N-party
+    // u_int32_t fieldSize = 100000; // mod
+    // std::vector<u_int32_t> shares = getAdditiveShares(secret, N, fieldSize);
 
     // // シェアの表示
     // std::cout << "Shares are: ";
@@ -27,99 +26,102 @@ int main()
     // std::cout << "(mod " << fieldSize << ")" << std::endl;
 
     // // 秘密値の復元
-    // int reconstructedSecret = reconstructSecret(shares, fieldSize);
+    // u_int32_t reconstructedSecret = reconstructSecret(shares, fieldSize);
     // std::cout << "Reconstructed secret: " << reconstructedSecret << std::endl;
 
-    // ***************Clientが2つのServerで加算***************
-    // シェアの生成
-    int secret1, secret2;
-    std::cout << "secret1:";
-    std::cin >> secret1;
-    std::cout << "secret2:";
-    std::cin >> secret2;
+    // *************** Clientが2つのServerで加算 ***************
+    // // シェアの生成
+    // u_int32_t secret1, secret2;
+    // std::cout << "secret1:";
+    // std::cin >> secret1;
+    // std::cout << "secret2:";
+    // std::cin >> secret2;
 
-    int fieldSize = 100000;
-    std::vector<int> shares1 = getAdditiveShares(secret1, 2, fieldSize);
-    std::cout << "Shares of secret1 are: ";
+    // u_int32_t fieldSize = 100000;
+    // std::vector<u_int32_t> shares1 = getAdditiveShares(secret1, 2, fieldSize);
+    // std::cout << "Shares of secret1 are: ";
+    // for (int i = 0; i < 2; i++)
+    // {
+    //     std::cout << shares1[i] << " ";
+    // }
+    // std::cout << "(mod " << fieldSize << ")" << std::endl;
+    // std::vector<u_int32_t> shares2 = getAdditiveShares(secret2, 2, fieldSize);
+    // std::cout << "Shares of secret2 are: ";
+    // for (int i = 0; i < 2; i++)
+    // {
+    //     std::cout << shares2[i] << " ";
+    // }
+    // std::cout << "(mod " << fieldSize << ")" << std::endl;
+
+    // printSendMessage("send", "Sending shares...");
+
+    // // 各Partyに送るシェアと、各Partyが以降の処理で使うシェア(*)を表示。返り値として、(*)を返す。
+    // std::pair<std::vector<u_int32_t>, std::vector<u_int32_t>> shares_of_each_party = printDistributionWhoSentToWho("Party 1", "Party 2", shares1, shares2);
+
+    // u_int32_t party1_sum_of_shares = shareAddition(shares_of_each_party.first, fieldSize);
+    // u_int32_t party2_sum_of_shares = shareAddition(shares_of_each_party.second, fieldSize);
+    // std::cout << std::endl;
+    // std::cout << "[Party 1] Sum of shares: " << party1_sum_of_shares << std::endl;
+    // std::cout << "[Party 2] Sum of shares: " << party2_sum_of_shares << std::endl;
+
+    // printSendMessage("reconst", "Reconst is in progress...");
+
+    // u_int32_t result = (party1_sum_of_shares + party2_sum_of_shares) % fieldSize;
+    // std::cout << "***Secret: " << result << " ***" << std::endl;
+
+    // *************** Clientが2つのServerでかけ算(Beaver Multiplication Triples) ***************
+
+    // Beaver Multiplication Triplesによるかけ算は、2-partyプロトコル
+    u_int32_t fieldSize = 100;
+
+    // c = a * bとなる3つ組のシェア(a,b,c)を生成。(a,b,c)を2-party間だけで生成する方法もある。
+    std::tuple<std::vector<u_int32_t>, std::vector<u_int32_t>, std::vector<u_int32_t>> shares_of_abc = generateTriples(fieldSize);
+    std::vector<u_int32_t> shares_a = std::get<0>(shares_of_abc);
+    std::vector<u_int32_t> shares_b = std::get<1>(shares_of_abc);
+    std::vector<u_int32_t> shares_c = std::get<2>(shares_of_abc);
+
     for (int i = 0; i < 2; i++)
     {
-        std::cout << shares1[i] << " ";
+        std::cout << "Party " << i << ": (a,b,c) = (" << shares_a[i] << ", " << shares_b[i] << ", " << shares_c[i] << ")" << std::endl;
     }
-    std::cout << "(mod " << fieldSize << ")" << std::endl;
-    std::vector<int> shares2 = getAdditiveShares(secret2, 2, fieldSize);
-    std::cout << "Shares of secret2 are: ";
+
+    // 秘密値x,yのシェアを生成
+    u_int32_t secret_x, secret_y;
+    std::cout << "x(secret): ";
+    std::cin >> secret_x;
+    std::cout << "y(secret): ";
+    std::cin >> secret_y;
+
+    std::vector<u_int32_t> shares_x = getAdditiveShares(secret_x, 2, fieldSize);
+    printShares(shares_x, "x", 2, fieldSize);
+    std::vector<u_int32_t> shares_y = getAdditiveShares(secret_y, 2, fieldSize);
+    printShares(shares_y, "y", 2, fieldSize);
+
+    // ローカルでd,eを計算
+    std::vector<u_int32_t> shares_d(2), shares_e(2);
     for (int i = 0; i < 2; i++)
     {
-        std::cout << shares2[i] << " ";
+        shares_d[i] = (shares_x[i] - shares_a[i] + fieldSize) % fieldSize;
+        shares_e[i] = (shares_y[i] - shares_b[i] + fieldSize) % fieldSize;
     }
-    std::cout << "(mod " << fieldSize << ")" << std::endl;
 
-    std::string choose_send_or_stop;
-    while (true)
+    printSendMessage("send", "Sending shares...");
+    u_int32_t d = reconstructSecret(shares_d, fieldSize);
+    u_int32_t e = reconstructSecret(shares_e, fieldSize);
+    std::cout << "*** Reconstructed d and e ***" << std::endl;
+    std::cout << "d: " << d << ", e: " << e << std::endl;
+
+    std::vector<u_int32_t> shares_z(2);
+    for (int i = 0; i < 2; i++)
     {
-        std::cout << "Enter 'send' to continue or 'stop' to exit: ";
-        std::cin >> choose_send_or_stop;
-
-        if (choose_send_or_stop == "send")
-        {
-            std::cout << "Sending shares..." << std::endl;
-            break;
-        }
-        else if (choose_send_or_stop == "stop")
-        {
-            std::cout << "Stopping execution..." << std::endl;
-            return 0; // プログラムを終了
-        }
-        else
-        {
-            std::cout << "Invalid input. Please enter 'send' or 'stop'." << std::endl;
-        }
+        shares_z[i] = (e * shares_a[i] + d * shares_b[i] + shares_c[i]) % fieldSize;
     }
+    shares_z[0] += d * e % fieldSize;
 
-    sleep(1);
-    std::cout << std::endl;
-    sleep(1);
-
-    // 各Partyに送るシェアと、各Partyが以降の処理で使うシェア(*)を表示。返り値として、(*)を返す。
-    std::pair<std::vector<int>, std::vector<int>> shares_of_each_party = printDistributionWhoSentToWho("Party 1", "Party 2", shares1, shares2);
-
-    int party1_sum_of_shares = shareAddition(shares_of_each_party.first, fieldSize);
-    int party2_sum_of_shares = shareAddition(shares_of_each_party.second, fieldSize);
-    std::cout << std::endl;
-    std::cout << "[Party 1] Sum of shares: " << party1_sum_of_shares << std::endl;
-    std::cout << "[Party 2] Sum of shares: " << party2_sum_of_shares << std::endl;
-
-    std::string choose_reconst_or_stop;
-    while (true)
-    {
-        std::cout << "Enter 'reconst' to continue or 'stop' to exit: ";
-        std::cin >> choose_reconst_or_stop;
-
-        if (choose_reconst_or_stop == "reconst")
-        {
-            std::cout << "Reconst is in progress..." << std::endl;
-            break;
-        }
-        else if (choose_reconst_or_stop == "stop")
-        {
-            std::cout << "Stopping execution..." << std::endl;
-            return 0; // プログラムを終了
-        }
-        else
-        {
-            std::cout << "Invalid input. Please enter 'reconst' or 'stop'." << std::endl;
-        }
-    }
-
-    sleep(1);
-    std::cout << std::endl;
-    sleep(1);
-
-    int result = (party1_sum_of_shares + party2_sum_of_shares) % fieldSize;
-    std::cout << "***Secret: " << result << " ***" << std::endl;
-
-    // ***************Clientが2つのServerでかけ算(Beaver Multiplication Triples)***************
-    // ここに書いていく
+    // 結果を復元
+    printSendMessage("reconst", "Reconst is in progress...");
+    u_int32_t z = (shares_z[0] + shares_z[1]) % fieldSize;
+    std::cout << "*** Result: " << z << " ***" << std::endl;
 
     return 0;
 }

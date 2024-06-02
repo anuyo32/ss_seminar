@@ -3,10 +3,12 @@
 
 #include <vector>
 
-int generateRandomNumber(int fieldSize);
+u_int32_t generateRandomNumber(u_int32_t fieldSize);
 
-std::vector<int> getAdditiveShares(int secret, int N, int fieldSize);
+std::vector<u_int32_t> getAdditiveShares(u_int32_t secret, int N, u_int32_t fieldSize);
 
-int reconstructSecret(std::vector<int> shares, int fieldSize);
+void printShares(std::vector<u_int32_t> shares, std::string shares_name, int N, u_int32_t fieldSize);
+
+u_int32_t reconstructSecret(std::vector<u_int32_t> shares, u_int32_t fieldSize);
 
 #endif // GEN_AND_REC_SHARES_H

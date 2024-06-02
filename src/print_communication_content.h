@@ -5,10 +5,12 @@
 #include <utility>
 #include <string>
 
-std::pair<std::vector<int>, std::vector<int>> renewSharesAfterCommunication(std::vector<int> shares1, std::vector<int> shares2);
+void printSendMessage(std::string process_choice1, std::string choice1_message);
 
-void printVector(std::vector<int> vec);
+std::pair<std::vector<u_int32_t>, std::vector<u_int32_t>> renewSharesAfterCommunication(std::vector<u_int32_t> shares1, std::vector<u_int32_t> shares2);
 
-std::pair<std::vector<int>, std::vector<int>> printDistributionWhoSentToWho(std::string party1_name, std::string party2_name, std::vector<int> party1_before_shares, std::vector<int> party2_before_shares);
+void printVector(std::vector<u_int32_t> vec);
+
+std::pair<std::vector<u_int32_t>, std::vector<u_int32_t>> printDistributionWhoSentToWho(std::string party1_name, std::string party2_name, std::vector<u_int32_t> party1_before_shares, std::vector<u_int32_t> party2_before_shares);
 
 #endif // PRINT_COMMUNICATION_CONTENT_H
