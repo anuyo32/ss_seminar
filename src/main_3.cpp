@@ -4,7 +4,7 @@
 #include "main_3.hpp"
 #include "gen_and_rec_shares.hpp"
 #include "print_communication_content.hpp"
-#include "beaver_triple.hpp"
+#include "beaver_triple_sub_function.hpp"
 #include <iostream>
 
 int main_3()
