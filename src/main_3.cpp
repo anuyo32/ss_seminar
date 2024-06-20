@@ -12,7 +12,7 @@ int main_3()
     u_int32_t fieldSize = 1000; // あんまり大きいと、a*bがオーバーフローする (generateTriples内で生成する乱数の幅をfieldSize-1(現在)から適宜変えたらOK)
 
     // c = a * bとなる3つ組のシェア(a,b,c)を生成。(a,b,c)を2-party間だけで生成する方法もある。
-    std::tuple<std::vector<u_int32_t>, std::vector<u_int32_t>, std::vector<u_int32_t>> shares_of_abc = generateTriples(fieldSize);
+    std::tuple<std::vector<u_int32_t>, std::vector<u_int32_t>, std::vector<u_int32_t>> shares_of_abc = generateTriples_old(fieldSize);
     std::vector<u_int32_t> shares_a = std::get<0>(shares_of_abc);
     std::vector<u_int32_t> shares_b = std::get<1>(shares_of_abc);
     std::vector<u_int32_t> shares_c = std::get<2>(shares_of_abc);

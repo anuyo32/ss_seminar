@@ -2,7 +2,6 @@
 #include "gen_and_rec_shares.hpp"
 #include <numeric>
 #include <iostream>
-#include <tuple>
 
 // 2つのシェアの和を返す
 u_int32_t shareAddition(std::vector<u_int32_t> shares, u_int32_t fieldSize)
@@ -12,7 +11,7 @@ u_int32_t shareAddition(std::vector<u_int32_t> shares, u_int32_t fieldSize)
 }
 
 // c = a * bとなる3つ組のシェア(a,b,c)を生成
-std::tuple<std::vector<u_int32_t>, std::vector<u_int32_t>, std::vector<u_int32_t>> generateTriples(u_int32_t fieldSize)
+std::tuple<std::vector<u_int32_t>, std::vector<u_int32_t>, std::vector<u_int32_t>> generateTriples_old(u_int32_t fieldSize)
 {
     u_int32_t a_original = generateRandomNumber(fieldSize);
     u_int32_t b_original = generateRandomNumber(fieldSize);
