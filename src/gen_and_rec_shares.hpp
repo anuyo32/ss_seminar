@@ -2,6 +2,7 @@
 #define GEN_AND_REC_SHARES_HPP
 
 #include <vector>
+#include <string>
 
 u_int32_t generateRandomNumber(u_int32_t fieldSize);
 
